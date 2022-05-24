@@ -1,24 +1,25 @@
 CSEG AT 0H
+ZUF8R equ 20h
 LJMP Anfang
 
 org 0003h
 call interrupt
-ret
+reti
 
 org 0bh
 reti
 
 Anfang:
-mov tmod, #00000010b 
-mov tl0, #0c0h ; working #0C0h 
-mov th0, #0c0h ; working #0C0h 
-setb tr0
+;mov tmod, #00000010b 
+;mov tl0, #0c0h ; working #0C0h 
+;mov th0, #0c0h ; working #0C0h 
+;setb tr0
 MOV R0, #22H
 MOV P1, #0h
 MOV p2, #1h
 mov a, #1h
 call idle
-call sechs
+
 mov ie, #10000011b ; interupts freischalten
 jmp infinity
 
@@ -42,7 +43,7 @@ DJNZ R0, idle
 ret
 
 eins:
-	mov r2, #1h
+	mov r2, #0h
 	mov p1, #0h;a
 	call rotieren;b
 	call rotieren;c
@@ -57,7 +58,7 @@ eins:
 	ret
 
 zwei:
-	mov r2, #2h
+	mov r2, #1h
 	mov p1, #6h
 	call rotieren
 	mov p1, #0h
@@ -73,7 +74,7 @@ zwei:
 	ret
 
 drei:
-	mov r2, #3h
+	mov r2, #2h
 	mov p1, #6h
 	call rotieren
 	mov p1, #0h
@@ -90,7 +91,7 @@ drei:
 	call rotieren
 	ret
 vier:
-	mov r2, #4h
+	mov r2, #3h
 	mov p1, #66h
 	call rotieren
 	mov p1, #0h
@@ -105,7 +106,7 @@ vier:
 	call rotieren
 	ret
 fuenf:
-	mov r2, #5h
+	mov r2, #4h
 	mov p1, #66h
 	call rotieren
 	mov p1, #0h
@@ -122,7 +123,7 @@ fuenf:
 	call rotieren
 	ret
 sechs:
-	mov r2, #6h
+	mov r2, #5h
 	mov p1, #66h
 	call rotieren
 	mov p1, #0h
@@ -141,41 +142,173 @@ sechs:
 
 
 interrupt:
+	jnb P3.0, ende
 	mov r4, a
-	mov a, tl0
-	mov b, #06h
+	;mov a, tl0
+	;mov b, #06h
+	;div ab
+	;mov r3, b
+
+	call ZUFALL
+	mov b, #6h
 	div ab
 	mov r3, b
+
 	mov a, r4
 	cjne r3, #0h, case1
 	call eins
-	reti
+	ret
 
+ZUFALL:	mov	A, ZUF8R   ; initialisiere A mit ZUF8R
+	jnz	ZUB
+	cpl	A
+	mov	ZUF8R, A
+ZUB:	anl	a, #10111000b
+	mov	C, P
+	mov	A, ZUF8R
+	rlc	A
+	mov	ZUF8R, A
+	ret
+
+	
 case1:
 	cjne r3, #1h, case2
 	call zwei
-	reti
+	ret
 
 case2:
 	cjne r3, #2h, case3
 	call drei
-	reti
+	ret
 
 case3:
 	cjne r3, #3h, case4
 	call vier
-	reti
+	ret
 
 case4:
 	cjne r3, #4h, case5
 	call fuenf
-	reti
+	ret
 
 case5:
 	call sechs
-	reti
+	ret
 
 
 infinity:
-jnc infinity
+jmp infinity
+
+ende:
+	mov r0, #012h
+	call idle
+	mov r4, a
+	mov a, r2
+	mov r3, a
+	mov a, r4
+	cjne r3, #0h, case1e
+	call eins
+	jmp endeEnde
+case1e:
+	cjne r3, #1h, case2e
+	call zweiEnde
+	jmp endeEnde
+
+case2e:
+	cjne r3, #2h, case3e
+	call dreiEnde
+	jmp endeEnde
+
+case3e:
+	cjne r3, #3h, case4e
+	call vierEnde
+	jmp endeEnde
+
+case4e:
+	cjne r3, #4h, case5e
+	call fuenfEnde
+	jmp endeEnde
+
+case5e:
+	call sechsEnde
+	jmp endeEnde
+
+zweiEnde:
+	mov r2, #1h
+	mov p1, #6h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	call rotieren
+	call rotieren
+	call rotieren
+	mov p1, #060h
+	call rotieren
+	mov p1, #0h
+	ret
+dreiEnde:
+	mov r2, #2h
+	mov p1, #6h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #18h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #60h
+	call rotieren
+	mov p1, #0h
+	ret
+vierEnde:
+	mov r2, #3h
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	call rotieren
+	call rotieren
+	call rotieren
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	ret
+fuenfEnde:
+	mov r2, #4h
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #18h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	ret
+sechsEnde:
+	mov r2, #5h
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	mov p1, #66h
+	call rotieren
+	mov p1, #0h
+	ret
+
+endeEnde:
 end
