@@ -155,6 +155,8 @@ interrupt:
 	mov r3, b
 
 	mov a, r4
+	mov p1, #0h
+	mov p2, a
 	cjne r3, #0h, case1
 	call eins
 	ret
@@ -170,7 +172,7 @@ ZUB:	anl	a, #10111000b
 	mov	ZUF8R, A
 	ret
 
-	
+
 case1:
 	cjne r3, #1h, case2
 	call zwei
@@ -208,30 +210,44 @@ ende:
 	mov a, r4
 	cjne r3, #0h, case1e
 	call eins
-	jmp endeEnde
+	ret
 case1e:
 	cjne r3, #1h, case2e
-	call zweiEnde
-	jmp endeEnde
+	call zwei
+	ret
 
 case2e:
 	cjne r3, #2h, case3e
-	call dreiEnde
-	jmp endeEnde
+	call drei
+	ret
 
 case3e:
 	cjne r3, #3h, case4e
-	call vierEnde
-	jmp endeEnde
+	call vier
+	ret
 
 case4e:
 	cjne r3, #4h, case5e
-	call fuenfEnde
-	jmp endeEnde
+	call fuenf
+	ret
 
 case5e:
-	call sechsEnde
-	jmp endeEnde
+	call sechs
+	ret
+
+einsEnde:
+	mov r2, #0h
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	call rotieren
+	mov p1, #18h
+	call rotieren
+	mov p1, #0h
+	call rotieren
+	call rotieren
+	call rotieren
+	ret
 
 zweiEnde:
 	mov r2, #1h
