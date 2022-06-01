@@ -45,7 +45,7 @@ eins:
 
 zwei:
 	mov r2, #1h
-	mov p1, #6h
+	mov p1, #3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
@@ -53,7 +53,7 @@ zwei:
 	call rotieren
 	call rotieren
 	call rotieren
-	mov p1, #060h
+	mov p1, #0C0h
 	call rotieren
 	mov p1, #0h
 	call rotieren
@@ -61,7 +61,7 @@ zwei:
 
 drei:
 	mov r2, #2h
-	mov p1, #6h
+	mov p1, #3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
@@ -71,14 +71,14 @@ drei:
 	mov p1, #0h
 	call rotieren
 	call rotieren
-	mov p1, #60h
+	mov p1, #0C0h
 	call rotieren
 	mov p1, #0h
 	call rotieren
 	ret
 vier:
 	mov r2, #3h
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
@@ -86,14 +86,14 @@ vier:
 	call rotieren
 	call rotieren
 	call rotieren
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
 	ret
 fuenf:
 	mov r2, #4h
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
@@ -103,24 +103,24 @@ fuenf:
 	mov p1, #0h
 	call rotieren
 	call rotieren
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
 	ret
 sechs:
 	mov r2, #5h
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
 	call rotieren
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
 	call rotieren
-	mov p1, #66h
+	mov p1, #0C3h
 	call rotieren
 	mov p1, #0h
 	call rotieren
